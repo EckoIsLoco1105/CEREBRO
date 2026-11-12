@@ -70,27 +70,6 @@ node --check .\server\server.js
 
 In the browser, press **F12** and use **Console** for JavaScript errors and **Network → Fetch/XHR** for API status and response details. Check the API host's logs for database or Groq errors. Never share passwords, login tokens, `.env` files, or API keys in screenshots or bug reports.
 
-## Project map
-
-| File/folder | What it does |
-|---|---|
-| `index.html` | Page structure, navigation, dialogs, forms, and external browser libraries |
-| `style.css` | Layout, responsive styling, colors, and light/dark theme |
-| `script.js` | Page rendering, browser state, interactions, account sync, quizzes, uploads, and API calls |
-| `config.js` | Public API base URL; no secrets belong here |
-| `LOGO.png` | Sidebar logo |
-| `server/server.js` | Express API, authentication, validation, database access, file handling, and Groq calls |
-| `server/schema.sql` | MySQL tables, indexes, and relationships |
-| `server/.env.example` | Names of backend settings; example values only |
-| `server/package.json` | API dependencies and supported Node.js versions |
-| `server/package-lock.json` | Exact API dependency versions used by npm |
-| `docs/developer-guide.html` | Detailed, beginner-friendly code and debugging guide |
-| `docs/CEREBRO-Developer-Guide.pdf` | Printable copy of the developer guide |
-| `database-erd.svg`, `system-flowchart.svg`, `use-case-diagram.svg`, `cerebro-figma-ui.svg` | Data model, system flow, use cases, and UI reference diagrams |
-| `ui-wireframe.html` | Earlier wireframe/reference page |
-
-For the request-by-request data flow, every API route, schema details, common errors, and safe code changes, read the [Developer Guide](docs/developer-guide.html).
-
 ## Important security and deployment notes
 
 - GitHub Pages files are public. Never put `JWT_SECRET`, `DB_PASSWORD`, or `GROQ_API_KEY` in `config.js` or any frontend file.
