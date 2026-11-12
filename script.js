@@ -424,10 +424,20 @@
 	function setAuthMode(mode) {
 		authMode = mode;
 		const registering = mode === "register";
+		const password = document.getElementById("auth-password");
+		const passwordToggle = document.getElementById("auth-password-toggle");
 		document.getElementById("auth-title").textContent = registering ? "Create your account" : "Sign in";
 		document.getElementById("display-name-wrap").hidden = !registering;
 		document.getElementById("auth-name").required = registering;
-		document.getElementById("auth-password").autocomplete = registering ? "new-password" : "current-password";
+		password.autocomplete = registering ? "new-password" : "current-password";
+		password.maxLength = registering ? 16 : 128;
+		if (registering) password.pattern = "(?=.*[A-Z])(?=.*[^A-Za-z0-9\\s]).{10,16}";
+		else password.removeAttribute("pattern");
+		document.getElementById("auth-password-help").hidden = !registering;
+		password.type = "password";
+		passwordToggle.textContent = "Show";
+		passwordToggle.setAttribute("aria-label", "Show password");
+		passwordToggle.title = "Show password";
 		document.getElementById("auth-submit").innerHTML = registering ? "Create account <span>→</span>" : "Sign in <span>→</span>";
 		document.getElementById("auth-mode-toggle").textContent = registering ? "Already have an account? Sign in" : "Create an account";
 	}
@@ -529,6 +539,14 @@
 		if (target.matches("[data-view]")) { event.preventDefault(); setView(target.dataset.view); }
 		if (target.matches("[data-goto]")) setView(target.dataset.goto);
 		if (target.matches("[data-start-quiz], #start-quiz-hero, #start-quiz-history")) startQuiz();
+		if (target.matches("#auth-password-toggle")) {
+			const password = document.getElementById("auth-password");
+			const visible = password.type === "password";
+			password.type = visible ? "text" : "password";
+			target.textContent = visible ? "Hide" : "Show";
+			target.setAttribute("aria-label", `${visible ? "Hide" : "Show"} password`);
+			target.title = `${visible ? "Hide" : "Show"} password`;
+		}
 		if (target.matches("[data-quiz-topic]")) startQuiz(target.dataset.quizTopic, target.dataset.topicId);
 		if (target.matches("[data-create-reviewer]")) await createCourseReviewer(target.dataset.createReviewer);
 		if (target.matches("[data-download-resource]")) await downloadCourseResource(target.dataset.downloadResource);

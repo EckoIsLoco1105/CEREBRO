@@ -252,6 +252,11 @@ h1, h2, h3, p { margin-top: 0; }
 .dialog form > label { display: block; margin: 15px 0 7px; font-size: 11px; font-weight: 700; }
 .dialog input:not([type=radio]), .dialog textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 4px; outline: none; background: var(--canvas); color: var(--ink); font-size: 12px; resize: vertical; }
 .dialog input:focus, .dialog textarea:focus { border-color: #8fb5d9; box-shadow: 0 0 0 3px rgba(143,181,217,.16); }
+.password-field { position: relative; }
+.password-field input { padding-right: 68px !important; }
+.password-toggle { position: absolute; top: 50%; right: 8px; padding: 5px; transform: translateY(-50%); border: 0; border-radius: 3px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 700; cursor: pointer; }
+.password-toggle:hover, .password-toggle:focus-visible { color: var(--ink); }
+.password-help { margin: 7px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
 .color-options { display: flex; gap: 17px; }
 .color-choice { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 10px; cursor: pointer; }
 .color-choice input { position: absolute; opacity: 0; }

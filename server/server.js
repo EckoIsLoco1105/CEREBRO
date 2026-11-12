@@ -126,8 +126,8 @@ app.get("/api/health", asyncRoute(async (_request, response) => {
 
 app.post("/api/auth/register", asyncRoute(async (request, response) => {
   const { email, password, displayName } = request.body || {};
-  if (!validString(displayName, 80) || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== "string" || password.length < 10 || password.length > 128) {
-    return response.status(400).json({ error: "Enter a name, valid email, and password of at least 10 characters." });
+  if (!validString(displayName, 80) || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== "string" || password.length < 10 || password.length > 16 || !/[A-Z]/.test(password) || !/[^A-Za-z0-9\s]/.test(password)) {
+    return response.status(400).json({ error: "Enter a name, valid email, and a password of 10–16 characters with at least one capital letter and one special character." });
   }
   const passwordHash = await bcrypt.hash(password, 12);
   try {
