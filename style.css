@@ -85,6 +85,7 @@ button { color: inherit; }
 .breadcrumb strong { color: var(--ink); font-weight: 600; }
 .crumb-slash { color: #53677a; }
 .top-actions { display: flex; align-items: center; gap: 12px; }
+.account-action { min-height: 36px; padding: 0 16px; }
 .today-label { margin-right: 8px; color: var(--muted); font-size: 11px; }
 .icon-button {
 	display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid var(--line); border-radius: 6px; background: rgba(19, 26, 35, 0.9); font-size: 16px; cursor: pointer;
@@ -296,6 +297,7 @@ h1, h2, h3, p { margin-top: 0; }
 	.breadcrumb { margin-right: auto; font-size: 11px; }
 	.top-actions { gap: 7px; }
 	.today-label { display: none; }
+	.account-action { min-height: 34px; padding: 0 10px; font-size: 10px; }
 	.top-add { min-height: 34px; padding: 0 10px; font-size: 10px; }
 	.theme-toggle { width: 32px; height: 32px; }
 	.page-content { padding: 29px 17px 28px; }
@@ -327,6 +329,7 @@ h1, h2, h3, p { margin-top: 0; }
 	.breadcrumb { gap: 6px; }
 	.top-add { font-size: 0; gap: 0; width: 34px; padding: 0; }
 	.top-add span { font-size: 17px; }
+	.account-action { padding: 0 8px; }
 	.stat-card { padding: 10px; }
 	.stat-top { white-space: normal; }
 	.stat-foot { align-items: flex-start; flex-direction: column; }

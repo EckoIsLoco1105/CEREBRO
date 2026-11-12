@@ -400,6 +400,12 @@
 		const name = user?.displayName || user?.display_name || "Student workspace";
 		copy.innerHTML = `<strong>${escapeHtml(name)}</strong><small>${user ? "Account synced" : (API_BASE ? "Sign in to sync" : "Local demo mode")}</small>`;
 		button.querySelector(".avatar").textContent = name.trim().charAt(0).toUpperCase();
+		const signedIn = Boolean(localStorage.getItem(TOKEN_KEY));
+		const authAction = document.getElementById("auth-action");
+		authAction.textContent = signedIn ? "Log out" : "Sign in";
+		authAction.classList.toggle("button-outline", signedIn);
+		authAction.classList.toggle("button-primary", !signedIn);
+		authAction.setAttribute("aria-label", signedIn ? "Log out of your account" : "Sign in to your account");
 	}
 
 	async function loadAccountData() {
@@ -417,8 +423,22 @@
 		} catch (error) {
 			localStorage.removeItem(TOKEN_KEY);
 			syncProfile(null);
+			const status = document.getElementById("connection-status");
+			if (status.textContent.includes("ACCOUNT SYNCED")) status.innerHTML = "<i></i> API CONNECTED";
 			toast(`Could not sync account: ${error.message}`);
 		}
+	}
+
+	function signOut() {
+		if (!window.confirm("Sign out of your C.E.R.E.B.R.O account?")) return;
+		localStorage.removeItem(TOKEN_KEY);
+		state = { courses: [], quizzes: [], activity: [] };
+		localStorage.removeItem(STORAGE_KEY);
+		syncProfile(null);
+		render();
+		const status = document.getElementById("connection-status");
+		if (status.textContent.includes("ACCOUNT SYNCED")) status.innerHTML = "<i></i> API CONNECTED";
+		toast("Signed out. Account data was cleared from this browser.");
 	}
 
 	function setAuthMode(mode) {
@@ -723,16 +743,20 @@
 	});
 	document.getElementById("profile-button").addEventListener("click", () => {
 		if (localStorage.getItem(TOKEN_KEY)) {
-			if (window.confirm("Sign out of your C.E.R.E.B.R.O account?")) {
-				localStorage.removeItem(TOKEN_KEY);
-				state = { courses: [], quizzes: [], activity: [] };
-				localStorage.removeItem(STORAGE_KEY);
-				syncProfile(null); render(); toast("Signed out. Account data was cleared from this browser.");
-			}
+			signOut();
 			return;
 		}
 		if (!API_BASE) { toast("Local demo mode: configure the API URL to enable accounts and cloud sync."); return; }
 		setAuthMode("login"); openModal("auth-modal");
+	});
+	document.getElementById("auth-action").addEventListener("click", () => {
+		if (localStorage.getItem(TOKEN_KEY)) {
+			signOut();
+			return;
+		}
+		if (!API_BASE) { toast("Local demo mode: configure the API URL to enable accounts and cloud sync."); return; }
+		setAuthMode("login");
+		openModal("auth-modal");
 	});
 
 	document.getElementById("auth-form").addEventListener("submit", async event => {
@@ -759,8 +783,8 @@
 	const initialView = location.hash.replace("#", "");
 	if (["dashboard", "courses", "quizzes", "analytics"].includes(initialView)) setView(initialView);
 	render();
+	syncProfile(null);
 	if (API_BASE) {
-		syncProfile(null);
 		fetch(`${API_BASE}/api/health`).then(response => { if (response.ok) { const status = document.getElementById("connection-status"); status.innerHTML = "<i></i> API CONNECTED"; status.classList.add("connected"); loadAccountData(); } }).catch(() => toast("API is not reachable. Demo data remains available."));
 	}
 })();
