@@ -105,7 +105,7 @@ async function groqCompletion(messages, maxTokens = 2400, responseFormat) {
   const completion = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: process.env.GROQ_MODEL || "llama-3.1-8b-instant", temperature: 0.35, max_tokens: maxTokens, ...(responseFormat ? { response_format: responseFormat } : {}), messages }),
+    body: JSON.stringify({ model: process.env.GROQ_MODEL || "openai/gpt-oss-20b", temperature: 0.35, max_completion_tokens: maxTokens, ...(responseFormat ? { response_format: responseFormat } : {}), messages }),
     signal: AbortSignal.timeout(30000)
   });
   if (!completion.ok) {

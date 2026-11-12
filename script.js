@@ -300,14 +300,19 @@
 			if (activityChart) activityChart.destroy();
 			activityChart = new Chart(document.getElementById("activity-chart"), {
 				type: "bar",
-				data: { labels: days.map(day => day.label), datasets: [{ data: days.map(day => day.amount), backgroundColor: days.map(day => day.amount ? "#8fb5d9" : "#263b4e"), borderRadius: 3, maxBarThickness: 28 }] },
+				data: { labels: days.map(day => day.label), datasets: [{ data: days.map(day => day.amount), backgroundColor: days.map(day => day.amount ? "#8fb5d9" : chartEmptyBarColor()), borderRadius: 3, maxBarThickness: 28 }] },
 				options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: context => `${context.raw} study action${context.raw === 1 ? "" : "s"}` } } }, scales: { x: { grid: { display: false }, border: { display: false }, ticks: { color: chartTextColor(), font: { family: "DM Mono", size: 9 } } }, y: { beginAtZero: true, suggestedMax: Math.max(3, ...days.map(day => day.amount)), ticks: { stepSize: 1, precision: 0, color: chartTextColor(), font: { family: "DM Mono", size: 9 } }, grid: { color: chartGridColor() }, border: { display: false } } } }
 			});
 		}
 	}
 
-	function chartTextColor() { return "#9bb0c2"; }
-	function chartGridColor() { return "rgba(161, 182, 204, 0.16)"; }
+	function themeColor(name, fallback) {
+		return getComputedStyle(document.body).getPropertyValue(name).trim() || fallback;
+	}
+
+	function chartTextColor() { return themeColor("--muted", "#9bb0c2"); }
+	function chartGridColor() { return themeColor("--line", "rgba(161, 182, 204, 0.16)"); }
+	function chartEmptyBarColor() { return themeColor("--surface-soft", "#263b4e"); }
 
 	function updateCharts() {
 		if (!window.Chart) return;
@@ -736,9 +741,20 @@
 	document.querySelectorAll(".modal-backdrop").forEach(backdrop => backdrop.addEventListener("click", event => { if (event.target === backdrop) closeModal(backdrop.id); }));
 	document.addEventListener("keydown", event => { if (event.key === "Escape") document.querySelectorAll(".modal-backdrop.open").forEach(modal => closeModal(modal.id)); });
 	document.getElementById("mobile-menu").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("open"));
+	function updateThemeToggle() {
+		const isDark = document.body.classList.contains("dark");
+		const button = document.getElementById("theme-toggle");
+		const nextMode = isDark ? "light" : "dark";
+		button.textContent = isDark ? "☀" : "☾";
+		button.setAttribute("aria-label", `Switch to ${nextMode} mode`);
+		button.title = `Switch to ${nextMode} mode`;
+		document.querySelector('meta[name="theme-color"]').content = isDark ? "#10161e" : "#f3f6f9";
+	}
+
 	document.getElementById("theme-toggle").addEventListener("click", () => {
-		document.body.classList.toggle("dark");
-		localStorage.setItem(THEME_KEY, document.body.classList.contains("dark") ? "dark" : "light");
+		const isDark = document.body.classList.toggle("dark");
+		localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+		updateThemeToggle();
 		renderActivity(); updateCharts();
 	});
 	document.getElementById("profile-button").addEventListener("click", () => {
@@ -779,7 +795,8 @@
 	});
 
 	document.getElementById("today-label").textContent = new Date().toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-	if (localStorage.getItem(THEME_KEY) === "dark") document.body.classList.add("dark");
+	document.body.classList.toggle("dark", localStorage.getItem(THEME_KEY) !== "light");
+	updateThemeToggle();
 	const initialView = location.hash.replace("#", "");
 	if (["dashboard", "courses", "quizzes", "analytics"].includes(initialView)) setView(initialView);
 	render();
