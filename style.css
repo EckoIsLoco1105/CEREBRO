@@ -246,6 +246,19 @@ h1, h2, h3, p { margin-top: 0; }
 .modal-backdrop.open { display: flex; animation: fade-in .18s ease; }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 .dialog { position: relative; width: min(100%, 440px); max-height: min(90vh, 780px); overflow: auto; padding: 30px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: var(--shadow); animation: dialog-in .2s ease both; }
+.confirm-dialog { width: min(100%, 500px); padding: 26px 24px 20px; background: linear-gradient(180deg, rgba(18, 25, 35, 0.98), rgba(12, 17, 25, 0.98)); border-color: rgba(159, 174, 216, 0.18); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+.confirm-content { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.confirm-icon {
+	display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, rgba(177, 146, 255, 0.2), rgba(126, 118, 255, 0.18)); border: 1px solid rgba(177, 146, 255, 0.35); color: #d9d1ff; font-size: 16px;
+}
+.confirm-copy { flex: 1; }
+.confirm-copy h2 { margin: 0 0 4px; font: 700 16px Manrope, sans-serif; }
+.confirm-copy p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.button-confirm {
+	background: linear-gradient(135deg, #9d7afc 0%, #6f5ae8 100%); color: #f3f1ff; box-shadow: 0 16px 26px rgba(111, 90, 232, 0.32);
+}
+.button-confirm:hover { background: linear-gradient(135deg, #b495ff 0%, #7f6de8 100%); color: #fff; }
 @keyframes dialog-in { from { transform: translateY(9px) scale(.99); } to { transform: translateY(0) scale(1); } }
 .dialog-close { position: absolute; top: 13px; right: 15px; width: 30px; height: 30px; border: 0; background: transparent; color: var(--muted); font-size: 23px; cursor: pointer; }
 .dialog h2 { margin: 8px 0 6px; font: 700 24px Manrope, sans-serif; }

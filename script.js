@@ -434,8 +434,7 @@
 		}
 	}
 
-	function signOut() {
-		if (!window.confirm("Sign out of your C.E.R.E.B.R.O account?")) return;
+	function performSignOut() {
 		localStorage.removeItem(TOKEN_KEY);
 		state = { courses: [], quizzes: [], activity: [] };
 		localStorage.removeItem(STORAGE_KEY);
@@ -444,6 +443,10 @@
 		const status = document.getElementById("connection-status");
 		if (status.textContent.includes("ACCOUNT SYNCED")) status.innerHTML = "<i></i> API CONNECTED";
 		toast("Signed out. Account data was cleared from this browser.");
+	}
+
+	function showSignOutConfirm() {
+		openModal("confirm-modal");
 	}
 
 	function setAuthMode(mode) {
@@ -739,6 +742,10 @@
 
 	document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.dataset.close)));
 	document.querySelectorAll(".modal-backdrop").forEach(backdrop => backdrop.addEventListener("click", event => { if (event.target === backdrop) closeModal(backdrop.id); }));
+	document.getElementById("confirm-signout").addEventListener("click", () => {
+		closeModal("confirm-modal");
+		performSignOut();
+	});
 	document.addEventListener("keydown", event => { if (event.key === "Escape") document.querySelectorAll(".modal-backdrop.open").forEach(modal => closeModal(modal.id)); });
 	document.getElementById("mobile-menu").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("open"));
 	function updateThemeToggle() {
@@ -759,7 +766,7 @@
 	});
 	document.getElementById("profile-button").addEventListener("click", () => {
 		if (localStorage.getItem(TOKEN_KEY)) {
-			signOut();
+			showSignOutConfirm();
 			return;
 		}
 		if (!API_BASE) { toast("Local demo mode: configure the API URL to enable accounts and cloud sync."); return; }
@@ -767,7 +774,7 @@
 	});
 	document.getElementById("auth-action").addEventListener("click", () => {
 		if (localStorage.getItem(TOKEN_KEY)) {
-			signOut();
+			showSignOutConfirm();
 			return;
 		}
 		if (!API_BASE) { toast("Local demo mode: configure the API URL to enable accounts and cloud sync."); return; }
