@@ -16,7 +16,7 @@ Modern/Edge Features: GROQ-powered quiz generation, PDF/TXT resource parsing, br
 
 ADMIN ACCOUNT:
 Username: admin@cerebro.com
-Password: Admin!Pass123
+Password: Pass!Admin1
 
 NOTES:
 C.E.R.E.B.R.O is a course review and quiz organizer for students and instructors, with local demo support and synced cloud functionality through the Node.js API and MySQL database.
